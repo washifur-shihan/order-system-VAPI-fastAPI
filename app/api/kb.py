@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request
 from app.services.retrieval import search_menu
+import json
 
 router = APIRouter()
 
@@ -10,22 +11,60 @@ async def kb_search(request: Request):
     except Exception:
         body = {}
 
+    print("KB RAW BODY:", json.dumps(body, indent=2, ensure_ascii=False))
+
     message = body.get("message", {})
-    messages = message.get("messages", [])
+    messages = message.get("messages", []) or []
+    messages_openai = message.get("messagesOpenAIFormatted", []) or []
 
     user_query = ""
-    for msg in reversed(messages):
-        if msg.get("role") == "user":
-            user_query = msg.get("content", "")
-            break
 
-    print("KB REQUEST BODY:", body)
-    print("KB SEARCH QUERY:", user_query)
+    # Try standard messages first
+    for msg in reversed(messages):
+        role = msg.get("role")
+        content = msg.get("content")
+
+        if role == "user":
+            if isinstance(content, str):
+                user_query = content
+                break
+            elif isinstance(content, list):
+                text_parts = []
+                for part in content:
+                    if isinstance(part, dict) and part.get("type") == "text":
+                        text_parts.append(part.get("text", ""))
+                user_query = " ".join(text_parts).strip()
+                if user_query:
+                    break
+
+    # Fallback to OpenAI-formatted messages
+    if not user_query:
+        for msg in reversed(messages_openai):
+            if msg.get("role") == "user":
+                content = msg.get("content", "")
+                if isinstance(content, str):
+                    user_query = content
+                elif isinstance(content, list):
+                    text_parts = []
+                    for part in content:
+                        if isinstance(part, dict) and part.get("type") == "text":
+                            text_parts.append(part.get("text", ""))
+                    user_query = " ".join(text_parts).strip()
+                break
+
+    print("KB SEARCH QUERY:", repr(user_query))
 
     if not user_query:
         return {"documents": []}
 
-    results = search_menu(user_query, match_count=5)
+    # Slightly improve recall for short voice queries
+    search_query = user_query
+    if "pepperoni" in user_query.lower() and "pizza" not in user_query.lower():
+        search_query = user_query + " pizza price"
+
+    results = search_menu(search_query, match_count=5)
+
+    print("KB RESULTS COUNT:", len(results))
 
     return {
         "documents": [
