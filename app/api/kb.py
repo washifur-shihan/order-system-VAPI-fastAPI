@@ -5,17 +5,21 @@ router = APIRouter()
 
 @router.post("/search")
 async def kb_search(request: Request):
-    body = await request.json()
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+
     message = body.get("message", {})
     messages = message.get("messages", [])
 
-    # get latest user message
     user_query = ""
     for msg in reversed(messages):
         if msg.get("role") == "user":
             user_query = msg.get("content", "")
             break
 
+    print("KB REQUEST BODY:", body)
     print("KB SEARCH QUERY:", user_query)
 
     if not user_query:
@@ -27,8 +31,8 @@ async def kb_search(request: Request):
         "documents": [
             {
                 "content": row["content"],
-                "similarity": row.get("similarity", 0.9),
-                "uuid": str(row["id"])
+                "uuid": str(row["id"]),
+                "similarity": row.get("similarity", 0.9)
             }
             for row in results
         ]
