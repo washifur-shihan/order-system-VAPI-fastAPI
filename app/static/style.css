@@ -90,3 +90,13 @@ h1 {
   color: #666;
   margin-top: 8px;
 }
+
+.widget-section {
+  margin: 24px 0;
+}
+
+.small-note {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+}
