@@ -40,8 +40,11 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/")
 async def root(request: Request):
-    return templates.TemplateResponse("order.html", {"request": request})
-
+    return templates.TemplateResponse(
+        request=request,
+        name="order.html",
+        context={}
+    )
 
 @app.get("/health")
 async def health():
