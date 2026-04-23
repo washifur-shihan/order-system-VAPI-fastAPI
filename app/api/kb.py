@@ -27,6 +27,9 @@ async def kb_search(payload: KBSearchRequest):
     metadata = payload.metadata or payload.message.metadata or {}
     restaurant_slug = metadata.get("restaurantSlug")
 
+    print("KB SEARCH restaurantSlug:", restaurant_slug)
+    print("KB SEARCH payload:", payload.model_dump())
+
     if not restaurant_slug:
         return {"documents": []}
 

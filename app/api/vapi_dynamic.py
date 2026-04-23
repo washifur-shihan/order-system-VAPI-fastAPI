@@ -17,6 +17,7 @@ class AssistantSelectorRequest(BaseModel):
 
 @router.post("/assistant-selector")
 async def assistant_selector(payload: AssistantSelectorRequest):
+    print("ASSISTANT SELECTOR HIT:", payload.model_dump())
     metadata = payload.metadata or {}
     if payload.message and payload.message.metadata:
         metadata = {**payload.message.metadata, **metadata}
