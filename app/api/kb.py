@@ -1,53 +1,59 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-from typing import List, Optional, Any
+from fastapi import APIRouter, Request
 from app.services.retrieval import search_menu
 from app.services.restaurants import get_restaurant_by_slug
 
 router = APIRouter()
 
 
-class KBMessageItem(BaseModel):
-    role: str
-    content: Any
-
-
-class KBMessage(BaseModel):
-    messages: List[KBMessageItem]
-    metadata: Optional[dict] = None
-
-
-class KBSearchRequest(BaseModel):
-    message: KBMessage
-    metadata: Optional[dict] = None
-
-
 @router.post("/search")
-async def kb_search(payload: KBSearchRequest):
-    metadata = payload.metadata or payload.message.metadata or {}
-    restaurant_slug = metadata.get("restaurantSlug")
+async def kb_search(request: Request):
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
 
-    print("KB SEARCH restaurantSlug:", restaurant_slug)
-    print("KB SEARCH payload:", payload.model_dump())
+    print("KB RAW BODY:", body)
+
+    message = body.get("message", {}) or {}
+    messages = message.get("messages", []) or []
+    metadata = body.get("metadata", {}) or message.get("metadata", {}) or {}
+
+    restaurant_slug = metadata.get("restaurantSlug")
+    print("KB restaurantSlug:", restaurant_slug)
 
     if not restaurant_slug:
         return {"documents": []}
 
     restaurant = get_restaurant_by_slug(restaurant_slug)
+    print("KB restaurant:", restaurant)
+
     if not restaurant:
         return {"documents": []}
 
     user_query = ""
-    for msg in reversed(payload.message.messages):
-        if msg.role == "user":
-            if isinstance(msg.content, str):
-                user_query = msg.content
+
+    for msg in reversed(messages):
+        if msg.get("role") == "user":
+            content = msg.get("content", "")
+
+            if isinstance(content, str):
+                user_query = content
+            elif isinstance(content, list):
+                text_parts = []
+                for part in content:
+                    if isinstance(part, dict) and part.get("type") == "text":
+                        text_parts.append(part.get("text", ""))
+                user_query = " ".join(text_parts).strip()
+
             break
+
+    print("KB user_query:", user_query)
 
     if not user_query:
         return {"documents": []}
 
     results = search_menu(restaurant["id"], user_query, match_count=5)
+    print("KB results:", results)
 
     return {
         "documents": [
