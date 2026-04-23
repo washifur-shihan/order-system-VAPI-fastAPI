@@ -1,20 +1,25 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
+from pydantic import BaseModel
+from typing import Optional
 from app.services.restaurants import get_restaurant_by_slug, build_restaurant_prompt
 
 router = APIRouter()
 
 
+class AssistantSelectorMessage(BaseModel):
+    metadata: Optional[dict] = None
+
+
+class AssistantSelectorRequest(BaseModel):
+    metadata: Optional[dict] = None
+    message: Optional[AssistantSelectorMessage] = None
+
+
 @router.post("/assistant-selector")
-async def assistant_selector(request: Request):
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-
-    print("ASSISTANT REQUEST BODY:", body)
-
-    message = body.get("message", {})
-    metadata = body.get("metadata", {}) or message.get("metadata", {}) or {}
+async def assistant_selector(payload: AssistantSelectorRequest):
+    metadata = payload.metadata or {}
+    if payload.message and payload.message.metadata:
+        metadata = {**payload.message.metadata, **metadata}
 
     restaurant_slug = metadata.get("restaurantSlug")
 

@@ -1,23 +1,30 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
+from pydantic import BaseModel
+from typing import List, Optional, Any
 from app.services.retrieval import search_menu
 from app.services.restaurants import get_restaurant_by_slug
 
 router = APIRouter()
 
 
+class KBMessageItem(BaseModel):
+    role: str
+    content: Any
+
+
+class KBMessage(BaseModel):
+    messages: List[KBMessageItem]
+    metadata: Optional[dict] = None
+
+
+class KBSearchRequest(BaseModel):
+    message: KBMessage
+    metadata: Optional[dict] = None
+
+
 @router.post("/search")
-async def kb_search(request: Request):
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-
-    print("KB RAW BODY:", body)
-
-    message = body.get("message", {})
-    messages = message.get("messages", []) or []
-    metadata = body.get("metadata", {}) or message.get("metadata", {}) or {}
-
+async def kb_search(payload: KBSearchRequest):
+    metadata = payload.metadata or payload.message.metadata or {}
     restaurant_slug = metadata.get("restaurantSlug")
 
     if not restaurant_slug:
@@ -28,14 +35,11 @@ async def kb_search(request: Request):
         return {"documents": []}
 
     user_query = ""
-    for msg in reversed(messages):
-        if msg.get("role") == "user":
-            content = msg.get("content", "")
-            if isinstance(content, str):
-                user_query = content
+    for msg in reversed(payload.message.messages):
+        if msg.role == "user":
+            if isinstance(msg.content, str):
+                user_query = msg.content
             break
-
-    print("KB SEARCH QUERY:", user_query)
 
     if not user_query:
         return {"documents": []}
