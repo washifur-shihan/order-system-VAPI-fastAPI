@@ -15,7 +15,7 @@ async def assistant_selector(request: Request):
 
     message = body.get("message", {}) or {}
     metadata = body.get("metadata", {}) or message.get("metadata", {}) or {}
-
+# restaurant_slug = metadata.get("restaurantSlug") or "pizza-palace"
     restaurant_slug = metadata.get("restaurantSlug")
     print("ASSISTANT restaurantSlug:", restaurant_slug)
 

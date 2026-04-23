@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -11,15 +11,6 @@
     <h1>{{ restaurant.name }}</h1>
 <p>{{ restaurant.welcome_message or "Call us or chat with the assistant." }}</p>
 
-    <!-- <div class="actions">
-      <button class="call-btn" id="start-call-btn" type="button">Call to Order</button>
-      <p class="small-note">Starts a browser voice call using your microphone.</p>
-    </div> -->
-
-    <!-- <div class="voice-chat-box">
-      <h2>Voice Conversation</h2>
-      <div id="voice-messages" class="messages"></div>
-    </div> -->
 
     <div class="chat-box">
       <h2>Chat</h2>
@@ -150,6 +141,147 @@
               lastTranscript = key;
             }
           }
+        });
+
+        widget.addEventListener("error", function (event) {
+          console.error("Widget error:", event.detail);
+        });
+      }
+    });
+  </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ restaurant.name }}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>{{ restaurant.name }}</h1>
+    <p>{{ restaurant.welcome_message or "Call us or chat with the assistant." }}</p>
+
+    <div class="actions">
+      <button class="call-btn" id="start-call-btn" type="button">Call to Order</button>
+      <p class="small-note">Starts a browser voice call using your microphone.</p>
+    </div>
+
+    <div class="chat-box">
+      <h2>Chat</h2>
+      <div id="messages" class="messages"></div>
+
+      <form id="chat-form" class="chat-form">
+        <input
+          type="text"
+          id="message-input"
+          placeholder="Ask about menu, prices, or place an order..."
+          required
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const messagesDiv = document.getElementById("messages");
+    const chatForm = document.getElementById("chat-form");
+    const messageInput = document.getElementById("message-input");
+
+    let customerKey = localStorage.getItem("customer_key");
+    if (!customerKey) {
+      customerKey = "web-" + crypto.randomUUID();
+      localStorage.setItem("customer_key", customerKey);
+    }
+
+    function addMessage(role, text) {
+      const div = document.createElement("div");
+      div.className = `message ${role}`;
+      div.innerText = text;
+      messagesDiv.appendChild(div);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const message = messageInput.value.trim();
+      if (!message) return;
+
+      addMessage("user", message);
+      messageInput.value = "";
+
+      try {
+        const res = await fetch("/chat/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            restaurant_id: "{{ restaurant.id }}",
+            customer_key: customerKey,
+            message: message,
+            channel: "chat"
+          })
+        });
+
+        const data = await res.json();
+        addMessage("assistant", data.reply || "Sorry, I couldn't respond.");
+      } catch (err) {
+        addMessage("assistant", "Something went wrong. Please try again.");
+      }
+    });
+  </script>
+
+  <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
+
+  <vapi-widget
+    id="restaurant-vapi-widget"
+    public-key="44abeb8a-b2af-4459-96a7-5bf1467dcbd1"
+    mode="voice"
+    size="compact"
+    theme="light"
+    main-label="Call to Order"
+    start-button-text="Start Call"
+    end-button-text="End Call"
+    empty-voice-message="Tap to start talking"
+    assistant='{{ widget_assistant_json | safe }}'
+  ></vapi-widget>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const startBtn = document.getElementById("start-call-btn");
+      const widget = document.querySelector("vapi-widget");
+
+      if (startBtn && widget) {
+        startBtn.addEventListener("click", function () {
+          const tryClick = () => {
+            const button = widget.shadowRoot?.querySelector("button");
+            if (button) {
+              button.click();
+            } else {
+              setTimeout(tryClick, 300);
+            }
+          };
+          tryClick();
+        });
+      }
+
+      if (widget) {
+        widget.addEventListener("call-start", function () {
+          console.log("Voice call started");
+        });
+
+        widget.addEventListener("call-end", function () {
+          console.log("Voice call ended");
+        });
+
+        widget.addEventListener("message", function (event) {
+          console.log("Widget message:", event.detail);
         });
 
         widget.addEventListener("error", function (event) {

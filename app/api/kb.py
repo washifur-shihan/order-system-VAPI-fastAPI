@@ -19,6 +19,11 @@ async def kb_search(request: Request):
     metadata = body.get("metadata", {}) or message.get("metadata", {}) or {}
 
     restaurant_slug = metadata.get("restaurantSlug")
+
+    if not restaurant_slug:
+        assistant = body.get("assistant", {}) or {}
+        restaurant_slug = assistant.get("name")
+
     print("KB restaurantSlug:", restaurant_slug)
 
     if not restaurant_slug:
@@ -31,20 +36,11 @@ async def kb_search(request: Request):
         return {"documents": []}
 
     user_query = ""
-
     for msg in reversed(messages):
         if msg.get("role") == "user":
-            content = msg.get("content", "")
-
+            content = msg.get("message", "") or msg.get("content", "")
             if isinstance(content, str):
                 user_query = content
-            elif isinstance(content, list):
-                text_parts = []
-                for part in content:
-                    if isinstance(part, dict) and part.get("type") == "text":
-                        text_parts.append(part.get("text", ""))
-                user_query = " ".join(text_parts).strip()
-
             break
 
     print("KB user_query:", user_query)

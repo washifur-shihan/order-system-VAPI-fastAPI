@@ -1,4 +1,5 @@
 from app.db.supabase import supabase
+import json
 
 
 def get_restaurant_by_id(restaurant_id: str):
@@ -36,8 +37,26 @@ Rules:
 {restaurant.get('prompt_instructions') or 'None'}
 """.strip()
 
-## update restaurants
-## set prompt_instructions = 'Focus on burgers, fries, and drinks. Always suggest fries or a drink as an upsell. If the user asks for pizza, clearly say Burger Palace only serves burgers and sides.'
-## where slug = 'burger-palace';
 
-## If you want to change prompt from backend database
+def build_widget_assistant_config(restaurant: dict) -> str:
+    assistant_config = {
+        "name": restaurant["slug"],
+        "model": {
+            "provider": "openai",
+            "model": "gpt-4o-mini",
+            "messages": [
+                {
+                    "role": "system",
+                    "content": build_restaurant_prompt(restaurant)
+                }
+            ],
+            "knowledgeBaseId": restaurant.get("vapi_knowledge_base_id")
+        },
+        "voice": {
+            "provider": restaurant.get("voice_provider") or "vapi",
+            "voiceId": restaurant.get("voice_id") or "Elliot"
+        },
+        "firstMessage": restaurant.get("welcome_message") or f"Hello, welcome to {restaurant['name']}. How can I help you today?"
+    }
+
+    return json.dumps(assistant_config)
