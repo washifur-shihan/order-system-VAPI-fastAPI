@@ -90,14 +90,3 @@ h1 {
   color: #666;
   margin-top: 8px;
 }
-
-vapi-widget {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  opacity: 0;
-  pointer-events: none;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
