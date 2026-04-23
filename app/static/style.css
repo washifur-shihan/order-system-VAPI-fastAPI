@@ -84,3 +84,9 @@ h1 {
   border-radius: 8px;
   cursor: pointer;
 }
+
+.small-note {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+}
