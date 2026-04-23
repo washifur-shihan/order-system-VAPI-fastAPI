@@ -8,3 +8,4 @@
  pgvector 
  tiktoken
  openai
+ jinja2
