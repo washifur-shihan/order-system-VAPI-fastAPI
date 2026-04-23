@@ -35,3 +35,9 @@ Rules:
 - Additional instructions:
 {restaurant.get('prompt_instructions') or 'None'}
 """.strip()
+
+## update restaurants
+## set prompt_instructions = 'Focus on burgers, fries, and drinks. Always suggest fries or a drink as an upsell. If the user asks for pizza, clearly say Burger Palace only serves burgers and sides.'
+## where slug = 'burger-palace';
+
+## If you want to change prompt from backend database
