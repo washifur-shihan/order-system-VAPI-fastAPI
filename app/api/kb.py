@@ -16,10 +16,13 @@ async def kb_search(request: Request):
 
     message = body.get("message", {}) or {}
     messages = message.get("messages", []) or []
-    metadata = body.get("metadata", {}) or message.get("metadata", {}) or {}
+    restaurant_slug = None
 
+# 1. Try metadata first
+    metadata = body.get("metadata", {}) or message.get("metadata", {}) or {}
     restaurant_slug = metadata.get("restaurantSlug")
 
+    # 2. If not found, get from assistant.name
     if not restaurant_slug:
         assistant = body.get("assistant", {}) or {}
         restaurant_slug = assistant.get("name")
@@ -27,6 +30,7 @@ async def kb_search(request: Request):
     print("KB restaurantSlug:", restaurant_slug)
 
     if not restaurant_slug:
+        print("❌ No restaurant slug found!")
         return {"documents": []}
 
     restaurant = get_restaurant_by_slug(restaurant_slug)
