@@ -8,9 +8,11 @@ from app.services.llm_chat import generate_answer
 router = APIRouter()
 
 class ChatRequest(BaseModel):
+    restaurant_id: str
     customer_key: str
     message: str
     channel: str = "chat"
+
 
 @router.post("/")
 async def chat(req: ChatRequest):
@@ -21,7 +23,7 @@ async def chat(req: ChatRequest):
 
     save_message(conversation["id"], "user", req.message)
 
-    menu_hits = search_menu(req.message, match_count=5)
+    menu_hits = search_menu(req.restaurant_id, req.message, match_count=5)
     recent = get_recent_messages(conversation["id"])
 
     answer = generate_answer(

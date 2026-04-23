@@ -8,8 +8,8 @@
 </head>
 <body>
   <div class="container">
-    <h1>Pizza Order System</h1>
-    <p>Call us or chat with the assistant.</p>
+    <h1>{{ restaurant.name }}</h1>
+<p>{{ restaurant.welcome_message or "Call us or chat with the assistant." }}</p>
 
     <div class="actions">
       <button class="call-btn" id="start-call-btn" type="button">Call to Order</button>
@@ -83,10 +83,11 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            customer_key: customerKey,
-            message: message,
-            channel: "chat"
-          })
+  restaurant_id: "{{ restaurant.id }}",
+  customer_key: customerKey,
+  message: message,
+  channel: "chat"
+})
         });
 
         const data = await res.json();

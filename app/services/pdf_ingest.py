@@ -3,6 +3,7 @@ from pypdf import PdfReader
 from app.db.supabase import supabase
 from app.services.llm import embed_texts
 
+
 def chunk_text(text: str, chunk_size: int = 700, overlap: int = 100):
     chunks = []
     start = 0
@@ -12,7 +13,8 @@ def chunk_text(text: str, chunk_size: int = 700, overlap: int = 100):
         start += chunk_size - overlap
     return chunks
 
-def ingest_menu_pdf(document_id: str, storage_path: str):
+
+def ingest_menu_pdf(restaurant_id: str, document_id: str, storage_path: str):
     response = supabase.storage.from_("menu-files").download(storage_path)
     pdf = PdfReader(BytesIO(response))
     text = "\n".join(page.extract_text() or "" for page in pdf.pages)
@@ -23,6 +25,7 @@ def ingest_menu_pdf(document_id: str, storage_path: str):
     rows = []
     for i, (chunk, emb) in enumerate(zip(chunks, embeddings)):
         rows.append({
+            "restaurant_id": restaurant_id,
             "document_id": document_id,
             "chunk_index": i,
             "content": chunk,

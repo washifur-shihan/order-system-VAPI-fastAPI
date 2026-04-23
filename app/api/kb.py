@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Request
 from app.services.retrieval import search_menu
-import json
+from app.services.restaurants import get_restaurant_by_slug
 
 router = APIRouter()
+
 
 @router.post("/search")
 async def kb_search(request: Request):
@@ -11,60 +12,35 @@ async def kb_search(request: Request):
     except Exception:
         body = {}
 
-    print("KB RAW BODY:", json.dumps(body, indent=2, ensure_ascii=False))
+    print("KB RAW BODY:", body)
 
     message = body.get("message", {})
     messages = message.get("messages", []) or []
-    messages_openai = message.get("messagesOpenAIFormatted", []) or []
+    metadata = body.get("metadata", {}) or message.get("metadata", {}) or {}
+
+    restaurant_slug = metadata.get("restaurantSlug")
+
+    if not restaurant_slug:
+        return {"documents": []}
+
+    restaurant = get_restaurant_by_slug(restaurant_slug)
+    if not restaurant:
+        return {"documents": []}
 
     user_query = ""
-
-    # Try standard messages first
     for msg in reversed(messages):
-        role = msg.get("role")
-        content = msg.get("content")
-
-        if role == "user":
+        if msg.get("role") == "user":
+            content = msg.get("content", "")
             if isinstance(content, str):
                 user_query = content
-                break
-            elif isinstance(content, list):
-                text_parts = []
-                for part in content:
-                    if isinstance(part, dict) and part.get("type") == "text":
-                        text_parts.append(part.get("text", ""))
-                user_query = " ".join(text_parts).strip()
-                if user_query:
-                    break
+            break
 
-    # Fallback to OpenAI-formatted messages
-    if not user_query:
-        for msg in reversed(messages_openai):
-            if msg.get("role") == "user":
-                content = msg.get("content", "")
-                if isinstance(content, str):
-                    user_query = content
-                elif isinstance(content, list):
-                    text_parts = []
-                    for part in content:
-                        if isinstance(part, dict) and part.get("type") == "text":
-                            text_parts.append(part.get("text", ""))
-                    user_query = " ".join(text_parts).strip()
-                break
-
-    print("KB SEARCH QUERY:", repr(user_query))
+    print("KB SEARCH QUERY:", user_query)
 
     if not user_query:
         return {"documents": []}
 
-    # Slightly improve recall for short voice queries
-    search_query = user_query
-    if "pepperoni" in user_query.lower() and "pizza" not in user_query.lower():
-        search_query = user_query + " pizza price"
-
-    results = search_menu(search_query, match_count=5)
-
-    print("KB RESULTS COUNT:", len(results))
+    results = search_menu(restaurant["id"], user_query, match_count=5)
 
     return {
         "documents": [

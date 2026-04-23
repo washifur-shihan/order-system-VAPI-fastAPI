@@ -6,8 +6,8 @@ from app.services.retrieval import search_menu
 
 router = APIRouter()
 
-@router.post("/upload")
-async def upload_menu(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+@router.post("/upload/{restaurant_id}")
+async def upload_menu(restaurant_id: str, background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are allowed")
 
