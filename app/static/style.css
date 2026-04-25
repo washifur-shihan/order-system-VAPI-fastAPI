@@ -469,3 +469,64 @@ vapi-widget {
   bottom: 24px;
   z-index: 999999;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.voice-transcript-card {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.voice-transcript-card h3 {
+  margin-bottom: 12px;
+}
+
+.voice-transcript {
+  height: 220px;
+  overflow-y: auto;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.transcript-empty {
+  color: #6b7280;
+  margin: 0;
+  font-size: 14px;
+}
+
+.transcript-line {
+  padding: 10px 12px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.transcript-line.user {
+  background: #fed7aa;
+  margin-left: 24px;
+}
+
+.transcript-line.assistant {
+  background: #e5e7eb;
+  margin-right: 24px;
+}
+
+.transcript-partial {
+  opacity: 0.65;
+  font-style: italic;
+}
