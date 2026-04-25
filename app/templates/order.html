@@ -91,18 +91,18 @@
 
   <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
 
-  <vapi-widget
-    id="pizza-vapi-widget"
-    public-key="44abeb8a-b2af-4459-96a7-5bf1467dcbd1"
-    assistant-id="7ef1e73f-24e4-433d-a29c-2bc65333a6e6"
-    mode="voice"
-    theme="light"
-    size="compact"
-    main-label="Call to Order"
-    start-button-text="Start Call"
-    end-button-text="End Call"
-    empty-voice-message="Tap to start talking"
-  ></vapi-widget>
+ <vapi-widget
+  id="restaurant-vapi-widget"
+  public-key="44abeb8a-b2af-4459-96a7-5bf1467dcbd1"
+  mode="voice"
+  theme="light"
+  size="compact"
+  main-label="Call to Order"
+  start-button-text="Start Call"
+  end-button-text="End Call"
+  empty-voice-message="Tap to start talking"
+  assistant='{{ widget_assistant_json | safe }}'
+></vapi-widget>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
