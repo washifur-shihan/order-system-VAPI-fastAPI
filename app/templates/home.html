@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Order System</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">OS</div>
+        <div>
+          <h2>Order System</h2>
+          <p>Voice + Chat AI</p>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <a href="/" class="active">Home</a>
+        <a href="/r/pizza-palace">Pizza Palace</a>
+        <a href="/r/burger-palace">Burger Palace</a>
+        <a href="/docs">API Docs</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="hero">
+        <h1>Choose a Restaurant</h1>
+        <p>Select a restaurant to start ordering with voice or chat.</p>
+      </section>
+
+      <section class="restaurant-grid">
+        {% for restaurant in restaurants %}
+        <a class="restaurant-card" href="/r/{{ restaurant.slug }}">
+          <div class="card-icon">
+            {% if restaurant.slug == "pizza-palace" %}
+              🍕
+            {% elif restaurant.slug == "burger-palace" %}
+              🍔
+            {% else %}
+              🍽️
+            {% endif %}
+          </div>
+
+          <div>
+            <h2>{{ restaurant.name }}</h2>
+            <p>{{ restaurant.description }}</p>
+          </div>
+
+          <span class="open-link">Open →</span>
+        </a>
+        {% endfor %}
+      </section>
+    </main>
+  </div>
+</body>
+</html>
