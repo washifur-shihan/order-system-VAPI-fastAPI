@@ -7,39 +7,56 @@
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-  <main class="home-page">
-    <section class="home-hero">
-      <div class="hero-badge">Voice + Chat AI Ordering</div>
-      <h1>Choose a Restaurant</h1>
-      <p>Select a restaurant and start ordering with voice or chat.</p>
-    </section>
-
-    <section class="restaurant-grid">
-      {% for restaurant in restaurants %}
-      <a class="restaurant-card" href="/r/{{ restaurant.slug }}">
-        <div class="card-icon">
-          {% if restaurant.slug == "pizza-palace" %}
-            🍕
-          {% elif restaurant.slug == "burger-palace" %}
-            🍔
-          {% else %}
-            🍽️
-          {% endif %}
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">OS</div>
+        <div>
+          <h2>Order System</h2>
+          <p>Voice + Chat AI</p>
         </div>
+      </div>
 
-        <div class="card-content">
-          <h2>{{ restaurant.name }}</h2>
-          <p>{{ restaurant.description }}</p>
+      <nav class="side-nav">
+        <a href="/" class="active">🏠 Home</a>
+        <a href="/r/pizza-palace">🍕 Pizza Palace</a>
+        <a href="/r/burger-palace">🍔 Burger Palace</a>
+        <a href="/docs">📘 API Docs</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="hero">
+        <div>
+          <span class="badge">AI Restaurant Ordering</span>
+          <h1>Choose a Restaurant</h1>
+          <p>Select a restaurant and start ordering with voice or chat.</p>
         </div>
+      </section>
 
-        <span class="open-link">Start Order →</span>
-      </a>
-      {% endfor %}
-    </section>
+      <section class="restaurant-grid">
+        {% for restaurant in restaurants %}
+        <a class="restaurant-card" href="/r/{{ restaurant.slug }}">
+          <div class="card-icon">
+            {% if restaurant.slug == "pizza-palace" %}
+              🍕
+            {% elif restaurant.slug == "burger-palace" %}
+              🍔
+            {% else %}
+              🍽️
+            {% endif %}
+          </div>
 
-    <footer class="home-footer">
-      <a href="/docs">API Docs</a>
-    </footer>
-  </main>
+          <div class="card-content">
+            <h2>{{ restaurant.name }}</h2>
+            <p>{{ restaurant.description }}</p>
+          </div>
+
+          <span class="open-link">Open →</span>
+        </a>
+        {% endfor %}
+      </section>
+    </main>
+  </div>
 </body>
 </html>

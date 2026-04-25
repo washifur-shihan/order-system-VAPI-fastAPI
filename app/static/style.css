@@ -1,238 +1,192 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f6f6f6;
+  font-family: Inter, Arial, sans-serif;
   margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 720px;
-  margin: 40px auto;
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-}
-
-h1 {
-  margin-top: 0;
-}
-
-.actions {
-  margin: 20px 0;
-}
-
-.call-btn {
-  display: inline-block;
-  background: #16a34a;
-  color: white;
-  text-decoration: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: bold;
-}
-
-.chat-box {
-  margin-top: 24px;
-}
-
-.messages {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  height: 350px;
-  overflow-y: auto;
-  padding: 12px;
-  background: #fafafa;
-  margin-bottom: 12px;
-}
-
-.message {
-  max-width: 80%;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  line-height: 1.4;
-}
-
-.message.user {
-  background: #dbeafe;
-  margin-left: auto;
-}
-
-.message.assistant {
-  background: #e5e7eb;
-  margin-right: auto;
-}
-
-.chat-form {
-  display: flex;
-  gap: 10px;
-}
-
-.chat-form input {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-.chat-form button {
-  padding: 12px 16px;
-  border: none;
-  background: #111827;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.small-note {
-  font-size: 14px;
-  color: #666;
-  margin-top: 8px;
-}
-
-.widget-section {
-  margin: 24px 0;
-}
-
-.small-note {
-  font-size: 14px;
-  color: #666;
-  margin-top: 8px;
+  background: #f3f4f6;
+  color: #111827;
 }
 
 .layout {
   display: flex;
   min-height: 100vh;
-  background: #f3f4f6;
 }
 
 .sidebar {
-  width: 260px;
-  background: #111827;
+  width: 280px;
+  background: linear-gradient(180deg, #111827, #1f2937);
   color: white;
-  padding: 24px;
+  padding: 28px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: 14px;
+  margin-bottom: 36px;
 }
 
 .logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: #f97316;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f97316, #fb923c);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-weight: 800;
+  box-shadow: 0 10px 25px rgba(249, 115, 22, 0.35);
 }
 
 .brand h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .brand p {
-  margin: 2px 0 0;
-  color: #9ca3af;
-  font-size: 13px;
+  margin: 4px 0 0;
+  color: #d1d5db;
+  font-size: 14px;
 }
 
 .side-nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .side-nav a {
   color: #d1d5db;
   text-decoration: none;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  transition: 0.2s ease;
 }
 
 .side-nav a:hover,
 .side-nav a.active {
-  background: #1f2937;
+  background: rgba(255, 255, 255, 0.12);
   color: white;
+  transform: translateX(4px);
 }
 
 .main-content {
   flex: 1;
-  padding: 48px;
+  padding: 52px;
 }
 
 .hero {
-  background: white;
-  padding: 36px;
-  border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  margin-bottom: 28px;
+  min-height: 230px;
+  background:
+    linear-gradient(135deg, rgba(249, 115, 22, 0.92), rgba(17, 24, 39, 0.92)),
+    url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 42px;
+  border-radius: 28px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.14);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-bottom: 16px;
 }
 
 .hero h1 {
   margin: 0;
-  font-size: 36px;
+  font-size: 44px;
+  letter-spacing: -1px;
 }
 
 .hero p {
-  margin-top: 10px;
-  color: #6b7280;
+  margin: 12px 0 0;
+  color: #f9fafb;
+  font-size: 18px;
 }
 
 .restaurant-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
 }
 
 .restaurant-card {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   background: white;
-  padding: 24px;
-  border-radius: 18px;
+  padding: 26px;
+  border-radius: 24px;
   text-decoration: none;
   color: #111827;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 14px 35px rgba(17, 24, 39, 0.08);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  transition: 0.2s ease;
+  overflow: hidden;
+}
+
+.restaurant-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), transparent 55%);
+  opacity: 0;
+  transition: 0.2s ease;
 }
 
 .restaurant-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 22px 50px rgba(17, 24, 39, 0.14);
+}
+
+.restaurant-card:hover::before {
+  opacity: 1;
 }
 
 .card-icon {
-  width: 58px;
-  height: 58px;
-  background: #fef3c7;
-  border-radius: 16px;
+  z-index: 1;
+  min-width: 66px;
+  height: 66px;
+  background: #fff7ed;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 34px;
+}
+
+.card-content {
+  z-index: 1;
 }
 
 .restaurant-card h2 {
   margin: 0;
+  font-size: 22px;
 }
 
 .restaurant-card p {
-  margin: 6px 0 0;
+  margin: 7px 0 0;
   color: #6b7280;
+  line-height: 1.5;
 }
 
 .open-link {
+  z-index: 1;
   margin-left: auto;
   color: #f97316;
-  font-weight: bold;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 @media (max-width: 800px) {
@@ -241,130 +195,27 @@ h1 {
   }
 
   .sidebar {
-    width: auto;
+    width: 100%;
   }
 
   .main-content {
     padding: 24px;
   }
-}
 
-* {
-  box-sizing: border-box;
-}
+  .hero {
+    padding: 28px;
+  }
 
-body {
-  margin: 0;
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: linear-gradient(135deg, #fff7ed, #fef3c7);
-  color: #1f2937;
-}
+  .hero h1 {
+    font-size: 34px;
+  }
 
-.home-page {
-  min-height: 100vh;
-  padding: 56px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  .restaurant-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.home-hero {
-  text-align: center;
-  max-width: 720px;
-  margin-bottom: 40px;
-}
-
-.hero-badge {
-  display: inline-block;
-  margin-bottom: 18px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #ea580c;
-  font-weight: 700;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.home-hero h1 {
-  margin: 0;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  line-height: 1;
-  color: #111827;
-}
-
-.home-hero p {
-  margin-top: 18px;
-  font-size: 1.15rem;
-  color: #6b7280;
-}
-
-.restaurant-grid {
-  width: 100%;
-  max-width: 900px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-}
-
-.restaurant-card {
-  text-decoration: none;
-  color: inherit;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 28px;
-  padding: 30px;
-  min-height: 260px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.restaurant-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.16);
-}
-
-.card-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 22px;
-  display: grid;
-  place-items: center;
-  font-size: 2.4rem;
-  background: #fff7ed;
-  margin-bottom: 24px;
-}
-
-.card-content h2 {
-  margin: 0 0 10px;
-  font-size: 1.6rem;
-  color: #111827;
-}
-
-.card-content p {
-  margin: 0;
-  color: #6b7280;
-  line-height: 1.6;
-}
-
-.open-link {
-  margin-top: 28px;
-  font-weight: 800;
-  color: #ea580c;
-}
-
-.home-footer {
-  margin-top: 36px;
-}
-
-.home-footer a {
-  color: #9a3412;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.home-footer a:hover {
-  text-decoration: underline;
+  .open-link {
+    margin-left: 0;
+  }
 }
