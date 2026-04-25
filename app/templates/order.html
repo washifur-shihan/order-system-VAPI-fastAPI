@@ -162,7 +162,7 @@
     start-button-text="Start Call"
     end-button-text="End Call"
     empty-voice-message="Tap to start talking"
-assistant="{{ widget_assistant_json | forceescape }}"  ></vapi-widget>
+assistant="{{ widget_assistant_json | safe }}"  ></vapi-widget>
 
   <script>
   document.addEventListener("DOMContentLoaded", function () {
