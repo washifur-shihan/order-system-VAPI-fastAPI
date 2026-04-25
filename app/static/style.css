@@ -100,3 +100,297 @@ h1 {
   color: #666;
   margin-top: 8px;
 }
+
+/* ===== Restaurant Order Page Only ===== */
+
+.order-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(249, 115, 22, 0.18), transparent 32%),
+    linear-gradient(135deg, #fff7ed, #f3f4f6 45%, #e5e7eb);
+  padding: 32px;
+}
+
+.order-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.order-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.back-link {
+  text-decoration: none;
+  color: #111827;
+  font-weight: 700;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 999px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.status-pill {
+  background: #dcfce7;
+  color: #166534;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.order-hero {
+  background:
+    linear-gradient(135deg, rgba(17, 24, 39, 0.92), rgba(249, 115, 22, 0.88)),
+    url("https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1400&q=80");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 42px;
+  border-radius: 30px;
+  box-shadow: 0 24px 55px rgba(17, 24, 39, 0.18);
+  margin-bottom: 28px;
+}
+
+.order-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.order-hero h1 {
+  font-size: 46px;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.order-hero p {
+  max-width: 620px;
+  margin: 12px 0 0;
+  color: #f9fafb;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.order-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.order-panel {
+  background: white;
+  border-radius: 28px;
+  padding: 26px;
+  box-shadow: 0 18px 45px rgba(17, 24, 39, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.chat-header h2 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.ai-chip {
+  background: #fff7ed;
+  color: #c2410c;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.order-page .messages {
+  height: 430px;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
+    url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80");
+  background-size: cover;
+  background-position: center;
+  padding: 18px;
+}
+
+.order-page .message {
+  max-width: 78%;
+  padding: 13px 15px;
+  margin-bottom: 12px;
+  border-radius: 18px;
+  line-height: 1.5;
+  font-size: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.order-page .message.user {
+  background: #fed7aa;
+  margin-left: auto;
+  border-bottom-right-radius: 6px;
+}
+
+.order-page .message.assistant {
+  background: white;
+  margin-right: auto;
+  border-bottom-left-radius: 6px;
+}
+
+.order-page .chat-form {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.order-page .chat-form input {
+  flex: 1;
+  padding: 15px 16px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  outline: none;
+}
+
+.order-page .chat-form input:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.14);
+}
+
+.order-page .chat-form button {
+  border: none;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  padding: 0 24px;
+  border-radius: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.order-page .chat-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(249, 115, 22, 0.3);
+}
+
+.info-card {
+  background: white;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 18px 45px rgba(17, 24, 39, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.info-card h3 {
+  margin: 0 0 14px;
+  font-size: 22px;
+}
+
+.feature-list {
+  display: grid;
+  gap: 14px;
+}
+
+.feature-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #f9fafb;
+  padding: 14px;
+  border-radius: 18px;
+}
+
+.feature-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 14px;
+  background: #fff7ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.feature-item strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.feature-item p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.quick-prompts {
+  margin-top: 20px;
+}
+
+.quick-prompts h3 {
+  margin-bottom: 12px;
+}
+
+.prompt-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.prompt-btn {
+  border: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+  border-radius: 999px;
+  padding: 10px 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.prompt-btn:hover {
+  background: #ffedd5;
+}
+
+@media (max-width: 900px) {
+  .order-page {
+    padding: 18px;
+  }
+
+  .order-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order-hero {
+    padding: 30px;
+  }
+
+  .order-hero h1 {
+    font-size: 36px;
+  }
+
+  .order-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .order-page .chat-form {
+    flex-direction: column;
+  }
+
+  .order-page .chat-form button {
+    padding: 15px;
+  }
+}

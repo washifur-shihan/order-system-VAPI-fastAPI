@@ -6,31 +6,89 @@
   <title>{{ restaurant.name }}</title>
   <link rel="stylesheet" href="/static/style.css" />
 </head>
-<body>
-  <div class="container">
-    <h1>{{ restaurant.name }}</h1>
-    <p>{{ restaurant.welcome_message or "Call us or chat with the assistant." }}</p>
-
-    <div class="chat-box">
-      <h2>Chat</h2>
-      <div id="messages" class="messages"></div>
-
-      <form id="chat-form" class="chat-form">
-        <input
-          type="text"
-          id="message-input"
-          placeholder="Ask about menu, prices, or place an order..."
-          required
-        />
-        <button type="submit">Send</button>
-      </form>
+<body class="order-page">
+  <div class="order-shell">
+    <div class="order-topbar">
+      <a href="/" class="back-link">← Back to Restaurants</a>
+      <div class="status-pill">● Open for Orders</div>
     </div>
+
+    <section class="order-hero">
+      <span class="order-badge">Voice + Chat Ordering</span>
+      <h1>{{ restaurant.name }}</h1>
+      <p>{{ restaurant.welcome_message or "Call us or chat with the assistant to ask about menu items, prices, and place your order." }}</p>
+    </section>
+
+    <section class="order-grid">
+      <div class="order-panel">
+        <div class="chat-header">
+          <h2>Chat with AI</h2>
+          <span class="ai-chip">AI Assistant</span>
+        </div>
+
+        <div id="messages" class="messages">
+          <div class="message assistant">
+            Hi! Welcome to {{ restaurant.name }}. What would you like to order today?
+          </div>
+        </div>
+
+        <form id="chat-form" class="chat-form">
+          <input
+            type="text"
+            id="message-input"
+            placeholder="Ask about menu, prices, or place an order..."
+            required
+          />
+          <button type="submit">Send</button>
+        </form>
+
+        <div class="quick-prompts">
+          <h3>Try asking</h3>
+          <div class="prompt-buttons">
+            <button class="prompt-btn" type="button">What is popular?</button>
+            <button class="prompt-btn" type="button">Show me the menu</button>
+            <button class="prompt-btn" type="button">I want to place an order</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="info-card">
+        <h3>Order Options</h3>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">💬</div>
+            <div>
+              <strong>Chat Ordering</strong>
+              <p>Type your order and get instant AI help.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">🎙️</div>
+            <div>
+              <strong>Voice Call</strong>
+              <p>Use the call widget to order by speaking.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div>
+              <strong>Fast Checkout</strong>
+              <p>Ask questions, customize items, and confirm quickly.</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
   </div>
 
   <script>
     const messagesDiv = document.getElementById("messages");
     const chatForm = document.getElementById("chat-form");
     const messageInput = document.getElementById("message-input");
+    const promptButtons = document.querySelectorAll(".prompt-btn");
 
     let customerKey = localStorage.getItem("customer_key");
     if (!customerKey) {
@@ -46,10 +104,7 @@
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    chatForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const message = messageInput.value.trim();
+    async function sendMessage(message) {
       if (!message) return;
 
       addMessage("user", message);
@@ -74,6 +129,18 @@
       } catch (err) {
         addMessage("assistant", "Something went wrong. Please try again.");
       }
+    }
+
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = messageInput.value.trim();
+      sendMessage(message);
+    });
+
+    promptButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        sendMessage(button.innerText);
+      });
     });
   </script>
 
@@ -83,8 +150,8 @@
     id="restaurant-vapi-widget"
     public-key="44abeb8a-b2af-4459-96a7-5bf1467dcbd1"
     mode="voice"
-    theme="light"
     size="compact"
+    theme="light"
     main-label="Call to Order"
     start-button-text="Start Call"
     end-button-text="End Call"
@@ -93,29 +160,26 @@
   ></vapi-widget>
 
   <script>
-    window.addEventListener("load", function () {
+    document.addEventListener("DOMContentLoaded", function () {
       const widget = document.querySelector("vapi-widget");
 
-      if (!widget) {
-        console.error("Vapi widget not found");
-        return;
+      if (widget) {
+        widget.addEventListener("call-start", function () {
+          console.log("Voice call started");
+        });
+
+        widget.addEventListener("call-end", function () {
+          console.log("Voice call ended");
+        });
+
+        widget.addEventListener("message", function (event) {
+          console.log("Widget message:", event.detail);
+        });
+
+        widget.addEventListener("error", function (event) {
+          console.error("Widget error:", event.detail);
+        });
       }
-
-      widget.addEventListener("call-start", function () {
-        console.log("Voice call started");
-      });
-
-      widget.addEventListener("call-end", function () {
-        console.log("Voice call ended");
-      });
-
-      widget.addEventListener("message", function (event) {
-        console.log("Widget message:", event.detail);
-      });
-
-      widget.addEventListener("error", function (event) {
-        console.error("Widget error:", event.detail);
-      });
     });
   </script>
 </body>
