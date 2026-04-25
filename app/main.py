@@ -14,7 +14,29 @@ app = FastAPI(title="Order System")
 templates = Jinja2Templates(directory="app/templates")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
+@app.get("/")
+async def home(request: Request):
+    restaurants = [
+        {
+            "name": "Pizza Palace",
+            "slug": "pizza-palace",
+            "description": "Pizza, sides, and drinks."
+        },
+        {
+            "name": "Burger Palace",
+            "slug": "burger-palace",
+            "description": "Burgers, fries, and drinks."
+        }
+    ]
 
+    return templates.TemplateResponse(
+        request=request,
+        name="home.html",
+        context={
+            "request": request,
+            "restaurants": restaurants
+        }
+    )
 
 @app.get("/r/{slug}")
 async def restaurant_page(request: Request, slug: str):
